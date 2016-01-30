@@ -1,18 +1,13 @@
 ---
-Title: 'Statistical Inference Course Project, Part 2: Basic Inferential Data Analysis'
-Author: "Josué Lavandeira"
-Output:
-  html_document: default
-  pdf_document:
-    fig_height: 3
-    fig_width: 5
+# Title: 'Statistical Inference Course Project, Part 2: Basic Inferential Data Analysis'
+
+# Author: "Josué Lavandeira"
 ---
 
-For this second part of the project, we will analyze the `ToothGrowth` data in the R
-datasets package. The data comprises a set of 60 observations of the length of odontoblasts (teeth) in 10 guinea pigs at three different dose levels of Vitamin C
-(0.5, 1 and 2 mg) using two different delivery methods (orange juice or ascorbic
-acid).
+For this second part of the project, we will analyze the `ToothGrowth` data in the R datasets package. The data comprises a set of 60 observations of the length of odontoblasts (teeth) in 10 guinea pigs at three different dose levels of Vitamin C
+(0.5, 1 and 2 mg) using two different delivery methods (orange juice or ascorbic acid).
 
+### Data Analysis
 ```{r}
 library(datasets)
 library(ggplot2)
@@ -27,6 +22,8 @@ ggplot(data=ToothGrowth, aes(x=as.factor(dose), y=len, fill=supp)) +
 From the previous plot, we can clearly observe a positive correlation between the length of the tooth and the doseage of Vitamin C for both of the delivery methods.
 
 This observed effect of the Vitamin C dose on the tooth length can be ovserved also by using regresssion analysis. We must try to test if the supplement type (delivery method) has an effect on the tooth length, so we must analyze the tooth lengths  of two separate samples: One where the delivery method has been orange juice and another where the delivery method has been ascorbic acid. If we find a significant difference in the variance of the tooth lengths between the two methods, it will mean that one method is more or less effective in the delivery of Vitamin C than the other.
+
+
 
 ```{r}
 diff <- lm(len ~ dose + supp, data=ToothGrowth)
@@ -46,6 +43,8 @@ confint(diff)
 ```
 
 What these confidence intervals actually mean, is that if we collect a different set of data by using the same method, and we estimate parameters of this linear model many times, 95% of the values for the coefficient estimations will fall within the above expressed limits, while there's a 5% chance that values will not fin in this range.
+
+### Conclusions
 
 For each of the coefficients calculated we must assume as the null hypothesis that their values is equal to zero, which would mean that the tooth length variations will not have a direct correlation to any of the variables, wether it is the size of the dose, or the delivery method.
 

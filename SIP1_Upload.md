@@ -23,41 +23,40 @@ data <- matrix(rexp(simulations*sample, rate=lambda), simulations, sample)
 averages <- rowMeans(data)
 ```
 
-Now we can plot a histogram of our vector of averages so we can observe the distribution of our data.
+Now we can plot of our vector of averages so we can observe the distribution of our data.
 
 ```r
-# Plot the histogram of averages
+# Plot of averages
 png("averages.png", width=1000, height=600)
-barplot(averages, main = "Distribution of averages of samples drawn from exponential distribution with lambda=0.2", col="purple")
+plot(averages, main = "Distribution of averages of samples drawn from exponential distribution with lambda=0.2", col="purple",pch=19)
 # Plot a density line
 lines(density(averages))
 # Plot the center of the distribution
-abline(v=1/lambda, col="cyan")
+abline(v=1/lambda, col="cyan", lty=1, lwd=3)
 # Plot the theoretical density of the averages of samples
 xfit <- seq(min(averages), max(averages), length=100)
 yfit <- dnorm(xfit, mean=1/lambda, sd=(1/lambda/sqrt(sample)))
-lines(xfit, yfit, pch=22, col="brick", lty=2)
+abline(xfit, yfit, pch=22, col="orange", lty=1, lwd=3)
+#Plot the mean
+meanavgs <- mean(averages)
+abline(h=meanavgs, col="red", lty=1, lwd=3)
 # Add a legend
-legend('topright', c("simulation", "theoretical"), lty=c(1,2), col=c("purple", "brick"))dev.off()
-```
-
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) <- SUSTITUYE ESTA IMAGEN>
-
-The distribution of sample means is centered at 4.9866 <- SUSTITUYE ESTE VALOR>
-and the theoretical center of the distribution is `lambda^{-1} = 5` <- SUSTITUYE ESTE VALOR>.
-
-The variance of sample means is 0.6258 <- SUSTITUYE ESTE VALOR> where the theoretical variance of the distribution is `sigma^2 / n = 1/(lambda^2 n) = 1/(0.04 times 40) =
-0.625` <- SUSTITUYE ESTE VALOR>.
-
-According to the central limit theorem, the averages of samples follow normal distribution. The figure above also shows the density computed through the histogram and the normal density plotted with theoretical mean and variance values.  Also, the q-q plot below suggests the normality.
-
-```r
-png("normaldist.png", width=1000, height=600)
-qqnorm(row_means); qqline(row_means)
+legend('topright', c("simulation", "theoretical", "mean"), lty=c(1,1,1), col=c("cyan", "orange", "red"))
 dev.off()
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) <- SUSTITUYE ESTA IMAGEN>
+
+The distribution of sample means is centered at 4.990025 and the theoretical center of the distribution is `lambda^{-1} = 5`.
+
+The variance of sample means is 0.6258 where the theoretical variance of the distribution is `sigma^2 / n = 1/(lambda^2 n) = 1/(0.04 times 40) = 0.625`.
+
+According to the central limit theorem, the averages of samples follow normal distribution. Also, this q-q plot below suggests the normality.
+
+```r
+png("normaldist.png", width=1000, height=600)
+qqnorm(averages); qqline(averages)
+dev.off()
+```
 
 
 We also need to evaluate the coverage of the confidence interval for `1/lambda = bar{X} pm 1.96 frac{S}{sqrt{n}}`
@@ -75,8 +74,6 @@ coverage <- sapply(lambda_values, function(lamb) {
 library(ggplot2)
 qplot(lambda_values, coverage) + geom_hline(yintercept=0.95)
 ```
-
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) <- SUSTITUYE ESTA IMAGEN>
 
 The 95% confidence intervals for the rate parameter (`lambda`) to be estimated
 (`hat{lambda}`) are `hat{lambda}_{low} = hat{lambda}(1 - frac{1.96}{sqrt{n}})`    
